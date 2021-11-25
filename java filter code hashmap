@@ -1,0 +1,43 @@
+public class GroupOne {
+     public static void main(String[] args) {
+
+           List<DocumentType> studlist = new ArrayList<DocumentType>();
+           studlist.add(new DocumentType("1726", "Value 1", "Form60"));
+           studlist.add(new DocumentType("4321", "Value 2", "PAN"));
+           studlist.add(new DocumentType("2234", "Value 3", "Form60"));
+           studlist.add(new DocumentType("5223", "Value 4", "PAN"));
+           studlist.add(new DocumentType("7765", "A", "K"));
+           studlist.add(new DocumentType("3442", "B", "Form60"));
+
+           Map<String, List<DocumentType>> studlistGrouped = studlist.stream()
+                     .collect(Collectors.groupingBy(w -> w.stud_location));
+
+           studlistGrouped.entrySet().forEach(entry -> {
+                System.out.println("\n======");
+                System.out.println(entry.getKey());
+                System.out.println("======");
+                List<DocumentType> studlist1 = new ArrayList<DocumentType>();
+                studlist1 = entry.getValue();
+
+                for (int counter = 0; counter < studlist1.size(); counter++) {
+                     System.out.println(studlist1.get(counter).stud_name);
+                }
+
+           });
+
+     }
+}
+
+class DocumentType {
+     String stud_id;
+     String stud_name;
+     String stud_location;
+
+     DocumentType(String sid, String sname, String slocation) {
+           this.stud_id = sid;
+           this.stud_name = sname;
+           this.stud_location = slocation;
+     }
+}
+
+}
