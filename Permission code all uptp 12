@@ -9,28 +9,8 @@
             
             //--------------------------------Check permission ----------------------------------
             
-                public boolean checkPermission(Context context) {
-        Log.d(TAG, "checkPermission: " + SDK_INT + "   " + Build.VERSION_CODES.R);
-        if (SDK_INT >= Build.VERSION_CODES.R) {
-       /*   return   ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED;*/
-//            Log.d(TAG, "onClickonClick: In");
-            int result2 = ContextCompat.checkSelfPermission(context, CAMERA);
-            int result1 = ContextCompat.checkSelfPermission(context, MANAGE_EXTERNAL_STORAGE);
-            int result3 = ContextCompat.checkSelfPermission(context, READ_PHONE_STATE);
-            int result4 = ContextCompat.checkSelfPermission(context, CALL_PHONE);
-            int result5 = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
 
-            Log.d(TAG, "checkPermission: " +result2+" "+result3+" "+result4+" "+result5+" "+ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE));
-            return result2 == PackageManager.PERMISSION_GRANTED &&
-                    result3 == PackageManager.PERMISSION_GRANTED &&
-                    result1 == PackageManager.PERMISSION_GRANTED &&
-                    result4 == PackageManager.PERMISSION_GRANTED &&
-                    result5 == PackageManager.PERMISSION_GRANTED ;
-
-//            return Environment.isExternalStorageManager() ;
-        } else {
-            Log.d(TAG, "checkPermission: out");
+    public boolean checkPermission(Context context) {
             int result = ContextCompat.checkSelfPermission(context, READ_EXTERNAL_STORAGE);
             int result1 = ContextCompat.checkSelfPermission(context, WRITE_EXTERNAL_STORAGE);
             int result2 = ContextCompat.checkSelfPermission(context, CAMERA);
@@ -43,7 +23,7 @@
                     result3 == PackageManager.PERMISSION_GRANTED &&
                     result4 == PackageManager.PERMISSION_GRANTED &&
                     result5 == PackageManager.PERMISSION_GRANTED;
-        }
+
     }
 
             
