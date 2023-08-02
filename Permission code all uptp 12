@@ -58,3 +58,157 @@
 
         }
     }
+ 
+
+
+
+___________________
+flutter dynamic form
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Dynamic Form Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: DynamicForm(),
+    );
+  }
+}
+
+class DynamicForm extends StatefulWidget {
+  @override
+  _DynamicFormState createState() => _DynamicFormState();
+}
+
+class _DynamicFormState extends State<DynamicForm> {
+  List<FormData> formDataList = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Dynamic Form'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: formDataList.length,
+              itemBuilder: (context, index) {
+                return FormRow(
+                  formData: formDataList[index],
+                  onRemove: () {
+                    setState(() {
+                      formDataList.removeAt(index);
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                formDataList.add(FormData());
+              });
+            },
+            child: Text('Add Row'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              List<String> values = formDataList
+                  .map((data) =>
+                      'Text: ${data.textValue}, Dropdown: ${data.dropdownValue}')
+                  .toList();
+              print(values);
+            },
+            child: Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FormData {
+  String textValue = '';
+  String dropdownValue = '';
+}
+
+class FormRow extends StatefulWidget {
+  final FormData formData;
+  final VoidCallback onRemove;
+
+  FormRow({required this.formData, required this.onRemove});
+
+  @override
+  _FormRowState createState() => _FormRowState();
+}
+
+class _FormRowState extends State<FormRow> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a value';
+                }
+                return null;
+              },
+              onChanged: (value) {
+                setState(() {
+                  widget.formData.textValue = value;
+                });
+              },
+              decoration: InputDecoration(labelText: 'Text'),
+            ),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: DropdownButtonFormField<String>(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please select an option';
+                }
+                return null;
+              },
+              value: widget.formData.dropdownValue,
+              onChanged: (value) {
+                setState(() {
+                  widget.formData.dropdownValue = value!;
+                });
+              },
+              items: ['Option 1', 'Option 2', 'Option 3']
+                  .map((option) => DropdownMenuItem<String>(
+                        value: option,
+                        child: Text(option),
+                      ))
+                  .toList(),
+              decoration: InputDecoration(labelText: 'Dropdown'),
+            ),
+          ),
+          IconButton(
+            onPressed: widget.onRemove,
+            icon: Icon(Icons.remove),
+          ),
+        ],
+      ),
+    );
+  }
+}
